@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Plants - Proixe Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body{font-family:Arial, sans-serif; margin:0; background:#f9f9f9;}
+    header{background:#2c3e50;color:#fff;padding:18px;text-align:center;}
+    nav a{color:#fff;margin:0 10px;text-decoration:none;font-weight:bold;}
+    .container{max-width:1000px;margin:30px auto;padding:0 15px;}
+    .products{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;}
+    .product-card{background:#fff;padding:15px;border-radius:10px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.12);width:220px;text-align:center;}
+    .product-card img{width:100%;border-radius:6px;}
+    .product-card h3{margin:8px 0;}
+    .product-card p{margin:6px 0;color:#333;}
+    .btn{padding:8px 12px;border:none;border-radius:6px;background:#3498db;
+      color:#fff;cursor:pointer;}
+    .btn:hover{background:#1d6fa5;}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Proixe Store</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="plants.html">Plants</a>
+      <a href="grocery.html">Grocery</a>
+      <a href="clothes.html">Clothes</a>
+      <a href="cart.html">Cart</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2 style="text-align:center;">Plants - Green & Fresh</h2>
+    <div class="products">
+      <div class="product-card">
+        <img src="https://picsum.photos/200?plant1" alt="Aloe Vera">
+        <h3>Aloe Vera</h3>
+        <p>₹150</p>
+        <button class="btn" onclick="addToCart('Aloe Vera',150)">Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://picsum.photos/200?plant2" alt="Money Plant">
+        <h3>Money Plant</h3>
+        <p>₹120</p>
+        <button class="btn" onclick="addToCart('Money Plant',120)">Add to Cart</button>
+      </div>
+
+      <div class="product-card">
+        <img src="https://picsum.photos/200?plant3" alt="Snake Plant">
+        <h3>Snake Plant</h3>
+        <p>₹200</p>
+        <button class="btn" onclick="addToCart('Snake Plant',200)">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function addToCart(name, price){
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      cart.push({name: name, price: price});
+      localStorage.setItem('cart', JSON.stringify(cart));
+      alert(name + ' added to cart!');
+    }
+  </script>
+</body>
+</html>
