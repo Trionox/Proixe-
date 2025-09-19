@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Proixe Store - Account</title>
+  <style>
+    body { margin:0; font-family: Arial, sans-serif; background:#f9f9f9; }
+    header { background:#2c3e50; color:white; padding:15px; text-align:center; }
+    .container { max-width:400px; margin:30px auto; background:white; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
+    h2 { text-align:center; }
+    input { width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:5px; }
+    button { width:100%; padding:10px; background:#3498db; color:white; border:none; border-radius:5px; cursor:pointer; font-size:16px; }
+    button:hover { background:#1d6fa5; }
+    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#2c3e50; display:flex; justify-content:space-around; padding:10px 0; }
+    .bottom-nav a { color:white; text-decoration:none; font-weight:bold; }
+    .switch { text-align:center; margin-top:10px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>My Account</h2>
+</header>
+
+<div class="container" id="signupForm">
+  <h2>Sign Up</h2>
+  <input type="text" id="signupName" placeholder="Enter Name" required>
+  <input type="email" id="signupEmail" placeholder="Enter Email" required>
+  <input type="password" id="signupPassword" placeholder="Enter Password" required>
+  <button onclick="signup()">Sign Up</button>
+  <div class="switch">
+    Already have an account? <a href="#" onclick="showLogin()">Login</a>
+  </div>
+</div>
+
+<div class="container" id="loginForm" style="display:none;">
+  <h2>Login</h2>
+  <input type="email" id="loginEmail" placeholder="Enter Email" required>
+  <input type="password" id="loginPassword" placeholder="Enter Password" required>
+  <button onclick="login()">Login</button>
+  <div class="switch">
+    Don't have an account? <a href="#" onclick="showSignup()">Sign Up</a>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <a href="index.html">Home</a>
+  <a href="plants.html">Plants</a>
+  <a href="grocery.html">Grocery</a>
+  <a href="clothes.html">Clothes</a>
+  <a href="account.html">Account</a>
+</div>
+
+<script>
+  function showLogin() {
+    document.getElementById("signupForm").style.display = "none";
+    document.getElementById("loginForm").style.display = "block";
+  }
+
+  function showSignup() {
+    document.getElementById("signupForm").style.display = "block";
+    document.getElementById("loginForm").style.display = "none";
+  }
+
+  function signup() {
+    let name = document.getElementById("signupName").value;
+    let email = document.getElementById("signupEmail").value;
+    let password = document.getElementById("signupPassword").value;
+
+    if(!name || !email || !password) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    localStorage.setItem("user", JSON.stringify({ name, email, password }));
+    alert("Signup successful! Please login.");
+    showLogin();
+  }
+
+  function login() {
+    let email = document.getElementById("loginEmail").value;
+    let password = document.getElementById("loginPassword").value;
+
+    let user = JSON.parse(localStorage.getItem("user"));
+
+    if(user && user.email === email && user.password === password) {
+      alert("Welcome back, " + user.name + "!");
+      localStorage.setItem("loggedInUser", JSON.stringify(user));
+      window.location.href = "index.html";
+    } else {
+      alert("Invalid email or password!");
+    }
+  }
+</script>
+
+</body>
+</html>
