@@ -12,14 +12,13 @@ header nav a:hover{text-decoration:underline;}
 .products{display:flex;flex-wrap:wrap;justify-content:space-around;margin:20px;}
 .product-card{background:white;width:200px;margin:10px;padding:10px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);text-align:center;}
 .product-card img{width:100%;border-radius:5px;}
-.product-card button{margin-top:5px;padding:5px 10px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;}
+.product-card button{margin:5px;padding:5px 10px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;}
 .product-card button:hover{background:#1d6fa5;}
 .footer-nav{position:fixed;bottom:0;left:0;right:0;background:#2c3e50;display:flex;justify-content:space-around;padding:10px 0;}
 .footer-nav a{color:white;text-decoration:none;font-weight:bold;font-size:14px;}
 </style>
 </head>
 <body>
-
 <header>
 <h1>Proixe Store</h1>
 <nav>
@@ -40,13 +39,15 @@ header nav a:hover{text-decoration:underline;}
 </div>
 
 <script>
+// Grocery products
 const products=[
 {name:"Kurkure",price:10,discount:9,img:"https://via.placeholder.com/200?text=Kurkure"},
 {name:"Chips",price:10,discount:9,img:"https://via.placeholder.com/200?text=Chips"},
-{name:"Can Coke",price:90,discount:70,img:"https://via.placeholder.com/200?text=Coke"},
-{name:"Mario Maggi",price:25,discount:18,img:"https://via.placeholder.com/200?text=Maggi"}
+{name:"Coke Can",price:90,discount:70,img:"https://via.placeholder.com/200?text=Coke+Can"},
+{name:"Maggi 2 Pack",price:25,discount:18,img:"https://via.placeholder.com/200?text=Maggi+2+Pack"}
 ];
 
+// Render products
 function renderProducts(){
  const container=document.getElementById("products");
  container.innerHTML="";
@@ -63,6 +64,7 @@ function renderProducts(){
  });
 }
 
+// Add to cart
 function addToCart(index){
  let cart=JSON.parse(localStorage.getItem("cart"))||[];
  const product=products[index];
@@ -74,6 +76,5 @@ function addToCart(index){
 
 renderProducts();
 </script>
-
 </body>
 </html>
