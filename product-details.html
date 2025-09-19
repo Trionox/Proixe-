@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Product Detail - Proixe Store</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f9f9f9;}
+header{background:#2c3e50;color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;}
+header h1{margin:0;font-size:22px;}
+header nav a{color:white;margin-left:15px;text-decoration:none;font-weight:bold;}
+header nav a:hover{text-decoration:underline;}
+.product-detail{max-width:500px;margin:20px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+.product-detail img{width:100%;border-radius:5px;}
+button{padding:10px 15px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;margin-top:10px;}
+button:hover{background:#1d6fa5;}
+.order-status{margin-top:10px;}
+</style>
+</head>
+<body>
+<header>
+<h1>Proixe Store</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="cart.html">Cart</a>
+<a href="account.html">Account</a>
+</nav>
+</header>
+
+<div class="product-detail" id="product-detail"></div>
+
+<script>
+const product = {name:"Tulsi",price:40,discount:30,img:"images/tulsi.jpg",description:"Fresh Tulsi plant for home."};
+const currentUser = JSON.parse(localStorage.getItem("currentUser"))||null;
+
+function renderProductDetail(){
+ const container = document.getElementById("product-detail");
+ container.innerHTML = `<img src="${product.img}" alt="${product.name}">
+ <h2>${product.name}</h2>
+ <p>${product.description}</p>
+ <p>Price: <del>₹${product.price}</del> ₹${product.discount}</p>
+ <button onclick="addToCart()">Add to Cart</button>`;
+
+ if(!currentUser){ container.innerHTML += "<div class='order-status'>Login to see your order status.</div>"; return; }
+
+ let orders = JSON.parse(localStorage.getItem("orders"))||[];
+ let hasOrdered = orders.some(o=>o.phone===currentUser.phone && o.items.some(i=>i.name===product.name));
+
+ container.innerHTML += <div class='order-status'>${hasOrdered?"You have ordered this product.":"You haven't ordered this product yet."}</div>;
+}
+
+function addToCart(){
+ let cart = JSON.parse(localStorage.getItem("cart"))||[];
+ let existing = cart.find(c=>c.name===product.name);
+if(existing){ existing.qty += 1; } else { cart.push({...product, qty:1}); }
