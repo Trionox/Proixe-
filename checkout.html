@@ -4,116 +4,61 @@
 <meta charset="UTF-8">
 <title>Checkout - Proixe Store</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding-bottom:70px;}
+body{font-family:Arial,sans-serif;margin:0;padding-bottom:70px;background:#f9f9f9;}
 header{background:#2c3e50;color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;}
 header h1{margin:0;font-size:22px;}
 header nav a{color:white;margin-left:15px;text-decoration:none;font-weight:bold;}
 header nav a:hover{text-decoration:underline;}
-.cart-summary{max-width:600px;margin:20px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
-.cart-summary div{margin:5px 0;}
-form{max-width:400px;margin:20px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
-form input,form select{width:100%;padding:10px;margin:10px 0;border-radius:5px;border:1px solid #ccc;}
-form button{padding:10px 15px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;}
-form button:hover{background:#1d6fa5;}
-.footer-nav{position:fixed;bottom:0;left:0;right:0;background:#2c3e50;display:flex;justify-content:space-around;padding:10px 0;}
-.footer-nav a{color:white;text-decoration:none;font-weight:bold;font-size:14px;}
+.checkout-box{max-width:500px;margin:20px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+.checkout-box input{width:100%;padding:10px;margin:5px 0;border-radius:5px;border:1px solid #ccc;}
+button{padding:10px 15px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;margin-top:10px;}
+button:hover{background:#1d6fa5;}
 </style>
 </head>
 <body>
 <header>
 <h1>Proixe Store</h1>
 <nav>
-<a href="account.html">Account</a>
+<a href="index.html">Home</a>
 <a href="cart.html">Cart</a>
+<a href="account.html">Account</a>
 </nav>
 </header>
 
-<h2 style="text-align:center;">Checkout</h2>
-
-<div class="cart-summary" id="cart-summary">
-<h3>Cart Items:</h3>
-<div id="cart-items"></div>
-<h3 id="total">Total: ₹0</h3>
-</div>
-
-<form id="checkout-form">
-<input type="text" id="name" placeholder="Full Name" required>
-<input type="text" id="phone" placeholder="Phone Number" required>
-<input type="text" id="address" placeholder="Address" required>
-<select id="payment" required>
-<option value="">Select Payment Method</option>
+<div class="checkout-box">
+<h2>Checkout</h2>
+<input type="text" id="name" placeholder="Name">
+<input type="text" id="phone" placeholder="Phone">
+<input type="text" id="address" placeholder="Address">
+<select id="payment">
 <option value="Cash">Cash</option>
 <option value="Card">Card</option>
 </select>
-<button type="button" onclick="placeOrder()">Place Order</button>
-</form>
-
-<div class="footer-nav">
-<a href="index.html">Home</a>
-<a href="plants.html">Plants</a>
-<a href="grocery.html">Grocery</a>
-<a href="clothes.html">Clothes</a>
-<a href="account.html">Account</a>
+<h3 id="total"></h3>
+<button onclick="placeOrder()">Place Order</button>
 </div>
 
-<!-- EmailJS SDK -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@2.6.4/dist/email.min.js"></script>
 <script>
-emailjs.init("YOUR_EMAILJS_USER_ID"); // <-- Replace with your EmailJS user ID
+// Load cart
+let cart = JSON.parse(localStorage.getItem("cart"))||[];
+let total = cart.reduce((sum,i)=>sum+i.discount*i.qty,0);
+document.getElementById("total").innerText = "Total: ₹"+total;
 
-// Render Cart Items
-function renderCart(){
- let cart = JSON.parse(localStorage.getItem("cart"))||[];
- const container = document.getElementById("cart-items");
- container.innerHTML="";
- let total=0;
- cart.forEach((item,i)=>{
-   total += item.discount * item.qty;
-   container.innerHTML += <div>${item.name} x ${item.qty} = ₹${item.discount*item.qty}</div>;
- });
- document.getElementById("total").innerText="Total: ₹"+total;
-}
-
-renderCart();
-
-// Place Order
 function placeOrder(){
- const name = document.getElementById("name").value;
- const phone = document.getElementById("phone").value;
- const address = document.getElementById("address").value;
- const payment = document.getElementById("payment").value;
+if(cart.length===0){ alert("Cart empty!"); return; }
 
- if(!name||!phone||!address||!payment){ alert("Please fill all fields"); return; }
+const name = document.getElementById("name").value;
+const phone = document.getElementById("phone").value;
+const address = document.getElementById("address").value;
+const payment = document.getElementById("payment").value;
+if(!name||!phone||!address){ alert("Fill all fields"); return; }
 
- let cart = JSON.parse(localStorage.getItem("cart"))||[];
- if(cart.length===0){ alert("Cart is empty"); return; }
-
- const total = cart.reduce((sum,i)=>sum + i.discount*i.qty,0);
-
- // Save order in localStorage for Account page
- let orders = JSON.parse(localStorage.getItem("orders"))||[];
- orders.push({items:cart,total,phone,address,payment});
- localStorage.setItem("orders",JSON.stringify(orders));
-localStorage.removeItem("cart"); // empty cart after order
-
-// Send Email to Owner
-const templateParams = {
- user_name: name,
- user_phone: phone,
- user_address: address,
- user_payment: payment,
- order_details: JSON.stringify(cart,null,2),
- total_amount: total
-};
-
-emailjs.send("TRIO-45","template_5s8qx2e",templateParams)
-.then(function(response){
- alert("Order placed successfully!");
- window.location.href="account.html";
-}, function(error){
- alert("Failed to send order. Please try again.");
-});
-
+let orders = JSON.parse(localStorage.getItem("orders"))||[];
+orders.push({items:cart,total,name,phone,address,payment});
+localStorage.setItem("orders",JSON.stringify(orders));
+localStorage.removeItem("cart");
+alert("Order placed successfully!");
+window.location.href="index.html";
 }
 </script>
 </body>
