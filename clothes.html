@@ -3,66 +3,73 @@
 <head>
   <meta charset="UTF-8">
   <title>Clothes - Proixe Store</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body{font-family:Arial, sans-serif; margin:0; background:#f9f9f9;}
-    header{background:#2c3e50;color:#fff;padding:18px;text-align:center;}
-    nav a{color:#fff;margin:0 10px;text-decoration:none;font-weight:bold;}
-    .container{max-width:1000px;margin:30px auto;padding:0 15px;}
-    .products{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;}
-    .product-card{background:#fff;padding:15px;border-radius:10px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.12);width:220px;text-align:center;}
-    .product-card img{width:100%;border-radius:6px;}
-    .btn{padding:8px 12px;border:none;border-radius:6px;background:#3498db;
-      color:#fff;cursor:pointer;}
-    .btn:hover{background:#1d6fa5;}
+    body { font-family: Arial, sans-serif; background:#f9f9f9; margin:0; padding:0; }
+    header { background:#2c3e50; color:#fff; padding:15px; text-align:center; }
+    nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
+    nav a:hover { text-decoration:underline; }
+    nav { margin-top:10px; }
+    .products { display:flex; justify-content:space-around; flex-wrap:wrap; margin:30px; }
+    .product-card {
+      background:#fff; width:220px; margin:10px; padding:15px; text-align:center;
+      border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2);
+    }
+    .product-card img { width:100%; border-radius:8px; }
+    .old-price { text-decoration: line-through; color: gray; margin-right:5px; }
+    .new-price { font-weight:bold; color: green; }
+    button { margin-top:10px; padding:8px 12px; background:#3498db; border:none; color:#fff; border-radius:5px; cursor:pointer; }
+    button:hover { background:#1d6fa5; }
+    footer { background:#2c3e50; color:white; text-align:center; padding:15px; margin-top:30px; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Proixe Store</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="plants.html">Plants</a>
-      <a href="grocery.html">Grocery</a>
-      <a href="clothes.html">Clothes</a>
-      <a href="cart.html">Cart</a>
-    </nav>
-  </header>
 
-  <div class="container">
-    <h2 style="text-align:center;">Clothes - Trendy & Affordable</h2>
-    <div class="products">
-      <div class="product-card">
-        <img src="https://picsum.photos/200?c1" alt="T-Shirt">
-        <h3>Casual T-Shirt</h3>
-        <p>₹399</p>
-        <button class="btn" onclick="addToCart('Casual T-Shirt',399)">Add to Cart</button>
-      </div>
+<header>
+  <h1>Clothes Section</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="plants.html">Plants</a>
+    <a href="grocery.html">Grocery</a>
+    <a href="clothes.html">Clothes</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+</header>
 
-      <div class="product-card">
-        <img src="https://picsum.photos/200?c2" alt="Jeans">
-        <h3>Blue Jeans</h3>
-        <p>₹999</p>
-        <button class="btn" onclick="addToCart('Blue Jeans',999)">Add to Cart</button>
-      </div>
-
-      <div class="product-card">
-        <img src="https://picsum.photos/200?c3" alt="Jacket">
-        <h3>Light Jacket</h3>
-        <p>₹1299</p>
-        <button class="btn" onclick="addToCart('Light Jacket',1299)">Add to Cart</button>
-      </div>
-    </div>
+<div class="products">
+  <div class="product-card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/89/Tshirt_white.jpg" alt="Normal T-Shirt">
+    <h3>Normal T-Shirt</h3>
+    <p><span class="old-price">₹360</span> <span class="new-price">₹170</span></p>
+    <button onclick="addToCart('Normal T-Shirt',170)">Add to Cart</button>
   </div>
 
-  <script>
-    function addToCart(name, price){
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      cart.push({name: name, price: price});
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert(name + ' added to cart!');
-    }
-  </script>
+  <div class="product-card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/1/1d/Tshirt_black.jpg" alt="Modern T-Shirt">
+    <h3>Modern T-Shirt</h3>
+    <p><span class="old-price">₹400</span> <span class="new-price">₹250</span></p>
+    <button onclick="addToCart('Modern T-Shirt',250)">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/24/Socks_white.jpg" alt="Socks Pack">
+    <h3>Socks Pack</h3>
+    <p><span class="old-price">₹50</span> <span class="new-price">₹20</span></p>
+    <button onclick="addToCart('Socks Pack',20)">Add to Cart</button>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Proixe Store | All Rights Reserved</p>
+</footer>
+
+<script>
+  function addToCart(name, price){
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({name: name, price: price});
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(name + " added to cart!");
+  }
+</script>
+
 </body>
 </html>
