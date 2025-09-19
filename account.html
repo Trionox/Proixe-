@@ -9,10 +9,12 @@ header{background:#2c3e50;color:white;padding:15px 20px;display:flex;justify-con
 header h1{margin:0;font-size:22px;}
 header nav a{color:white;margin-left:15px;text-decoration:none;font-weight:bold;}
 header nav a:hover{text-decoration:underline;}
-#account-info{max-width:600px;margin:30px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
-form input{width:100%;padding:10px;margin:10px 0;border-radius:5px;border:1px solid #ccc;}
-form button{padding:10px 15px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;}
-form button:hover{background:#1d6fa5;}
+.account-box{max-width:500px;margin:20px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+.account-box h2{text-align:center;}
+.account-box div{margin:10px 0;}
+button{padding:10px 15px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;}
+button:hover{background:#1d6fa5;}
+.order-item{background:#f1f1f1;padding:10px;margin:5px 0;border-radius:5px;}
 .footer-nav{position:fixed;bottom:0;left:0;right:0;background:#2c3e50;display:flex;justify-content:space-around;padding:10px 0;}
 .footer-nav a{color:white;text-decoration:none;font-weight:bold;font-size:14px;}
 </style>
@@ -26,11 +28,12 @@ form button:hover{background:#1d6fa5;}
 </nav>
 </header>
 
-<div id="account-info">
-<form id="login-form">
-<input type="text" id="username" placeholder="Enter Name" required>
-<button type="button" onclick="login()">Login</button>
-</form>
+<div class="account-box" id="account-box">
+<h2>Your Account</h2>
+<div id="user-info"></div>
+<h3>Orders:</h3>
+<div id="orders-list"></div>
+<button onclick="logout()">Logout</button>
 </div>
 
 <div class="footer-nav">
@@ -42,55 +45,50 @@ form button:hover{background:#1d6fa5;}
 </div>
 
 <script>
-// Login function
-function login(){
- const username=document.getElementById("username").value;
- if(!username){ alert("Enter name"); return; }
+// Check if user is logged in
+let currentUser = JSON.parse(localStorage.getItem("currentUser"))||null;
 
- let orders=JSON.parse(localStorage.getItem("orders"))||[];
-
- const user={
-   name:username,
-   orders: orders.map(o=>({items:o.items,total:o.total,phone:o.phone,address:o.address}))
- };
-
- localStorage.setItem("user",JSON.stringify(user));
- renderAccount();
-}
-
-// Render account info
 function renderAccount(){
- const user=JSON.parse(localStorage.getItem("user"));
- if(!user) return;
-
- let html=<h3>Welcome, ${user.name}</h3>;
- html+=<button onclick="logout()">Logout</button>;
- html+=<h4>Your Orders:</h4>;
-
- if(user.orders.length===0){
-   html+=<p>No orders yet.</p>;
- } else {
-   user.orders.forEach((o,idx)=>{
-     html+=`<div style="border:1px solid #ccc;margin:10px;padding:10px;border-radius:5px;">
-       <strong>Order ${idx+1}</strong><br>
-       Phone: ${o.phone}<br>
-       Address: ${o.address}<br>
-       Total: ₹${o.total}<br>
-       Items: <pre>${JSON.stringify(o.items,null,2)}</pre>
-     </div>`;
-   });
+ const userBox=document.getElementById("user-info");
+ const ordersBox=document.getElementById("orders-list");
+ if(!currentUser){
+   userBox.innerHTML="<p>Please login first.</p>";
+   ordersBox.innerHTML="";
+   return;
  }
 
- document.getElementById("account-info").innerHTML=html;
+ userBox.innerHTML = `
+   <div><strong>Name:</strong> ${currentUser.name}</div>
+   <div><strong>Phone:</strong> ${currentUser.phone}</div>
+   <div><strong>Address:</strong> ${currentUser.address}</div>
+ `;
+
+ let orders = JSON.parse(localStorage.getItem("orders"))||[];
+ let userOrders = orders.filter(o=>o.phone===currentUser.phone);
+
+ if(userOrders.length===0){
+   ordersBox.innerHTML="<p>No orders placed yet.</p>";
+ } else {
+   ordersBox.innerHTML = "";
+   userOrders.forEach((o,i)=>{
+     const div = document.createElement("div");
+     div.className="order-item";
+     div.innerHTML = `<strong>Order ${i+1}:</strong><br>
+                      Items: <pre>${JSON.stringify(o.items,null,2)}</pre>
+                      Total: ₹${o.total}<br>
+                      Payment: ${o.payment}<br>
+                      Address: ${o.address}`;
+     ordersBox.appendChild(div);
+   });
+ }
 }
 
-// Logout function
 function logout(){
- localStorage.removeItem("user");
- location.reload();
+ localStorage.removeItem("currentUser");
+ alert("Logged out successfully");
+ window.location.href="index.html";
 }
 
-// Initial render
 renderAccount();
 </script>
 </body>
