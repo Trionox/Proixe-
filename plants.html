@@ -4,77 +4,70 @@
 <meta charset="UTF-8">
 <title>Plants - Proixe Store</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f9f9f9;padding-bottom:70px;margin:0;}
+body{font-family:Arial,sans-serif;margin:0;padding-bottom:70px;background:#f9f9f9;}
 header{background:#2c3e50;color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;}
 header h1{margin:0;font-size:22px;}
 header nav a{color:white;margin-left:15px;text-decoration:none;font-weight:bold;}
 header nav a:hover{text-decoration:underline;}
-.products{display:flex;flex-wrap:wrap;justify-content:space-around;margin:20px;}
-.product-card{background:white;width:200px;margin:10px;padding:10px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);text-align:center;}
+.products{max-width:900px;margin:20px auto;display:flex;flex-wrap:wrap;justify-content:space-around;}
+.product-card{background:white;padding:15px;width:250px;margin:10px;text-align:center;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
 .product-card img{width:100%;border-radius:5px;}
-.product-card button{margin:5px;padding:5px 10px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;}
-.product-card button:hover{background:#1d6fa5;}
-.footer-nav{position:fixed;bottom:0;left:0;right:0;background:#2c3e50;display:flex;justify-content:space-around;padding:10px 0;}
-.footer-nav a{color:white;text-decoration:none;font-weight:bold;font-size:14px;}
+button{padding:10px 15px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;margin-top:5px;}
+button:hover{background:#1d6fa5;}
 </style>
 </head>
 <body>
+
 <header>
 <h1>Proixe Store</h1>
 <nav>
-<a href="account.html">Account</a>
-<a href="cart.html">Cart</a>
-</nav>
-</header>
-
-<h2 style="text-align:center;">Plants</h2>
-<div class="products" id="products"></div>
-
-<div class="footer-nav">
 <a href="index.html">Home</a>
 <a href="plants.html">Plants</a>
 <a href="grocery.html">Grocery</a>
 <a href="clothes.html">Clothes</a>
+<a href="cart.html">Cart</a>
 <a href="account.html">Account</a>
-</div>
+</nav>
+</header>
+
+<div class="products" id="product-list"></div>
 
 <script>
-// Products data
 const products=[
-{name:"Tulsi",price:40,discount:30,img:"https://via.placeholder.com/200?text=Tulsi"},
-{name:"Normal Plant",price:150,discount:100,img:"https://via.placeholder.com/200?text=Normal+Plant"},
-{name:"Aloe Vera",price:100,discount:70,img:"https://via.placeholder.com/200?text=Aloe+Vera"},
-{name:"Khad",price:100,discount:60,img:"https://via.placeholder.com/200?text=Khad"}
+{name:"Tulsi",price:40,discount:30,img:"images/tulsi.jpg"},
+{name:"Aloe Vera",price:100,discount:70,img:"images/aloe_vera.jpg"},
+{name:"Fertilizer",price:100,discount:60,img:"images/khad.jpg"}
 ];
 
-// Render products
 function renderProducts(){
- const container=document.getElementById("products");
- container.innerHTML="";
- products.forEach((p,i)=>{
-   const div=document.createElement("div");
-   div.className="product-card";
-   div.innerHTML=`
-     <img src="${p.img}" alt="${p.name}">
-     <h3>${p.name}</h3>
-     <p>₹${p.discount} <del>₹${p.price}</del></p>
-     <button onclick="addToCart(${i})">Add to Cart</button>
-   `;
-   container.appendChild(div);
- });
+const container=document.getElementById("product-list");
+products.forEach((p,i)=>{
+ container.innerHTML+=`
+ <div class="product-card">
+ <img src="${p.img}" alt="${p.name}">
+ <h3>${p.name}</h3>
+ <p>Price: ₹<del>${p.price}</del> ₹${p.discount}</p>
+ <p>Qty: <button onclick="decrease(${i})">-</button> <span id="qty-${i}">1</span> <button onclick="increase(${i})">+</button></p>
+ <button onclick="addToCart(${i})">Add to Cart</button>
+ </div>`;
+});
 }
 
-// Add to cart
-function addToCart(index){
- let cart=JSON.parse(localStorage.getItem("cart"))||[];
- const product=products[index];
- const exist=cart.find(i=>i.name===product.name);
- if(exist){ exist.qty+=1; } else { cart.push({...product,qty:1}); }
- localStorage.setItem("cart",JSON.stringify(cart));
- alert(product.name+" added to cart");
+let quantities = products.map(()=>1);
+
+function increase(i){ quantities[i]++; document.getElementById("qty-"+i).innerText = quantities[i]; }
+function decrease(i){ if(quantities[i]>1){ quantities[i]--; document.getElementById("qty-"+i).innerText = quantities[i]; } }
+
+function addToCart(i){
+let cart = JSON.parse(localStorage.getItem("cart"))||[];
+let existing = cart.find(c=>c.name===products[i].name);
+if(existing){ existing.qty += quantities[i]; } else { cart.push({...products[i], qty:quantities[i]}); }
+localStorage.setItem("cart",JSON.stringify(cart));
+alert(products[i].name+" added to cart!");
 }
 
 renderProducts();
 </script>
+
 </body>
 </html>
