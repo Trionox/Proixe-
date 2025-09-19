@@ -9,23 +9,26 @@
     nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
     nav a:hover { text-decoration:underline; }
     nav { margin-top:10px; }
-    .products { display:flex; justify-content:space-around; flex-wrap:wrap; margin:30px; }
+    .section { padding:20px; }
+    .products { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
     .product-card {
-      background:#fff; width:220px; margin:10px; padding:15px; text-align:center;
-      border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2);
+      background:white; padding:15px; width:220px; border-radius:10px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.2); text-align:center;
     }
-    .product-card img { width:100%; border-radius:8px; }
-    .old-price { text-decoration: line-through; color: gray; margin-right:5px; }
-    .new-price { font-weight:bold; color: green; }
-    button { margin-top:10px; padding:8px 12px; background:#3498db; border:none; color:#fff; border-radius:5px; cursor:pointer; }
-    button:hover { background:#1d6fa5; }
-    footer { background:#2c3e50; color:white; text-align:center; padding:15px; margin-top:30px; }
+    .product-card img { width:180px; height:150px; object-fit:cover; border-radius:8px; }
+    .old-price { text-decoration: line-through; color: grey; margin-right:5px; }
+    .new-price { color: green; font-weight: bold; }
+    .qty-btn {
+      padding:8px 15px; margin-top:10px; background:#3498db; 
+      color:white; border:none; border-radius:5px; cursor:pointer;
+    }
+    .qty-btn:hover { background:#1d6fa5; }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Grocery Section</h1>
+  <h1>Grocery Items</h1>
   <nav>
     <a href="index.html">Home</a>
     <a href="plants.html">Plants</a>
@@ -35,44 +38,59 @@
   </nav>
 </header>
 
-<div class="products">
-  <div class="product-card">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Kurkure.jpg" alt="Kurkure">
-    <h3>Kurkure</h3>
-    <p><span class="old-price">₹10</span> <span class="new-price">₹9</span></p>
-    <button onclick="addToCart('Kurkure',9)">Add to Cart</button>
-  </div>
+<div class="section">
+  <h2 style="text-align:center;">Daily Essentials</h2>
+  <div class="products">
 
-  <div class="product-card">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Potato_chips.jpg" alt="Chips">
-    <h3>Potato Chips</h3>
-    <p><span class="old-price">₹10</span> <span class="new-price">₹9</span></p>
-    <button onclick="addToCart('Potato Chips',9)">Add to Cart</button>
-  </div>
+    <!-- Kurkure -->
+    <div class="product-card">
+      <img src="https://m.media-amazon.com/images/I/81QzW82dY3L.jpg" alt="Kurkure">
+      <h3>Kurkure</h3>
+      <p><span class="old-price">₹10</span> <span class="new-price">₹9</span></p>
+      <button class="qty-btn" onclick="addToCart('Kurkure', 9, 10)">+ Add to Cart</button>
+    </div>
 
-  <div class="product-card">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/3/3e/Coca-Cola_can.jpg" alt="Coke Can">
-    <h3>Coca Cola Can</h3>
-    <p><span class="old-price">₹90</span> <span class="new-price">₹70</span></p>
-    <button onclick="addToCart('Coca Cola Can',70)">Add to Cart</button>
-  </div>
+    <!-- Chips -->
+    <div class="product-card">
+      <img src="https://m.media-amazon.com/images/I/81YwQOSWpwL.jpg" alt="Chips">
+      <h3>Potato Chips</h3>
+      <p><span class="old-price">₹10</span> <span class="new-price">₹9</span></p>
+      <button class="qty-btn" onclick="addToCart('Potato Chips', 9, 10)">+ Add to Cart</button>
+    </div>
 
-  <div class="product-card">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/1/18/Maggi_2-Minute_Noodles.jpg" alt="Maggi">
-    <h3>Maggi 2 Pack</h3>
-    <p><span class="old-price">₹25</span> <span class="new-price">₹18</span></p>
-    <button onclick="addToCart('Maggi 2 Pack',18)">Add to Cart</button>
+    <!-- Coke Can -->
+    <div class="product-card">
+      <img src="https://m.media-amazon.com/images/I/61tC6CBcYdL.jpg" alt="Coca Cola Can">
+      <h3>Coca Cola (Can)</h3>
+      <p><span class="old-price">₹90</span> <span class="new-price">₹70</span></p>
+      <button class="qty-btn" onclick="addToCart('Coca Cola Can', 70, 90)">+ Add to Cart</button>
+    </div>
+
+    <!-- Maggi -->
+    <div class="product-card">
+      <img src="https://m.media-amazon.com/images/I/71m-Jz8bWPL.jpg" alt="Maggi Pack">
+      <h3>Maggi (2 Pack)</h3>
+      <p><span class="old-price">₹25</span> <span class="new-price">₹18</span></p>
+      <button class="qty-btn" onclick="addToCart('Maggi 2 Pack', 18, 25)">+ Add to Cart</button>
+    </div>
+
   </div>
 </div>
 
-<footer>
-  <p>&copy; 2025 Proixe Store | All Rights Reserved</p>
-</footer>
-
 <script>
-  function addToCart(name, price){
+  function addToCart(name, price, originalPrice){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.push({name: name, price: price});
+    let found = false;
+    for(let i=0; i<cart.length; i++){
+      if(cart[i].name === name){
+        cart[i].qty = (cart[i].qty || 1) + 1;
+        found = true;
+        break;
+      }
+    }
+    if(!found){
+      cart.push({name:name, price:price, originalPrice:originalPrice, qty:1});
+    }
     localStorage.setItem('cart', JSON.stringify(cart));
     alert(name + " added to cart!");
   }
