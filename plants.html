@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Clothes - Proixe Store</title>
+<title>Plants - Proixe Store</title>
 <style>
 body{font-family:Arial,sans-serif;background:#f9f9f9;padding-bottom:70px;margin:0;}
 header{background:#2c3e50;color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;}
@@ -27,7 +27,7 @@ header nav a:hover{text-decoration:underline;}
 </nav>
 </header>
 
-<h2 style="text-align:center;">Clothes</h2>
+<h2 style="text-align:center;">Plants</h2>
 <div class="products" id="products"></div>
 
 <div class="footer-nav">
@@ -39,11 +39,12 @@ header nav a:hover{text-decoration:underline;}
 </div>
 
 <script>
-// Clothes products
+// Products data
 const products=[
-{name:"Normal T-shirt",price:360,discount:170,img:"https://via.placeholder.com/200?text=Normal+Tshirt"},
-{name:"Modern T-shirt",price:400,discount:250,img:"https://via.placeholder.com/200?text=Modern+Tshirt"},
-{name:"Socks Pack",price:50,discount:20,img:"https://via.placeholder.com/200?text=Socks+Pack"}
+{name:"Tulsi",price:40,discount:30,img:"https://via.placeholder.com/200?text=Tulsi"},
+{name:"Normal Plant",price:150,discount:100,img:"https://via.placeholder.com/200?text=Normal+Plant"},
+{name:"Aloe Vera",price:100,discount:70,img:"https://via.placeholder.com/200?text=Aloe+Vera"},
+{name:"Khad",price:100,discount:60,img:"https://via.placeholder.com/200?text=Khad"}
 ];
 
 // Render products
@@ -63,7 +64,7 @@ function renderProducts(){
  });
 }
 
-// Add to cart with quantity
+// Add to cart
 function addToCart(index){
  let cart=JSON.parse(localStorage.getItem("cart"))||[];
  const product=products[index];
