@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Account - Proixe Store</title>
 <style>
-body{font-family:Arial,sans-serif;background:#f9f9f9;margin:0;padding-bottom:70px;}
+body{font-family:Arial,sans-serif;margin:0;padding-bottom:70px;background:#f9f9f9;}
 header{background:#2c3e50;color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;}
 header h1{margin:0;font-size:22px;}
 header nav a{color:white;margin-left:15px;text-decoration:none;font-weight:bold;}
@@ -16,16 +16,15 @@ header nav a:hover{text-decoration:underline;}
 button{padding:10px 15px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;}
 button:hover{background:#1d6fa5;}
 .order-item{background:#f1f1f1;padding:10px;margin:5px 0;border-radius:5px;}
-.footer-nav{position:fixed;bottom:0;left:0;right:0;background:#2c3e50;display:flex;justify-content:space-around;padding:10px 0;}
-.footer-nav a{color:white;text-decoration:none;font-weight:bold;font-size:14px;}
 </style>
 </head>
 <body>
 <header>
 <h1>Proixe Store</h1>
 <nav>
-<a href="account.html">Account</a>
+<a href="index.html">Home</a>
 <a href="cart.html">Cart</a>
+<a href="account.html">Account</a>
 </nav>
 </header>
 
@@ -47,19 +46,9 @@ button:hover{background:#1d6fa5;}
 <button onclick="logout()">Logout</button>
 </div>
 
-<div class="footer-nav">
-<a href="index.html">Home</a>
-<a href="plants.html">Plants</a>
-<a href="grocery.html">Grocery</a>
-<a href="clothes.html">Clothes</a>
-<a href="account.html">Account</a>
-</div>
-
 <script>
-// Check if user is logged in
 let currentUser = JSON.parse(localStorage.getItem("currentUser"))||null;
 
-// Show login or account info
 function renderAccount(){
  const loginForm = document.getElementById("login-form");
  const accountBox = document.getElementById("account-box");
@@ -74,11 +63,9 @@ function renderAccount(){
  const userBox=document.getElementById("user-info");
  const ordersBox=document.getElementById("orders-list");
 
- userBox.innerHTML = `
-   <div><strong>Name:</strong> ${currentUser.name}</div>
-   <div><strong>Phone:</strong> ${currentUser.phone}</div>
-   <div><strong>Address:</strong> ${currentUser.address}</div>
- `;
+ userBox.innerHTML = `<div><strong>Name:</strong> ${currentUser.name}</div>
+ <div><strong>Phone:</strong> ${currentUser.phone}</div>
+ <div><strong>Address:</strong> ${currentUser.address}</div>`;
 
  let orders = JSON.parse(localStorage.getItem("orders"))||[];
  let userOrders = orders.filter(o=>o.phone===currentUser.phone);
@@ -100,7 +87,6 @@ function renderAccount(){
  }
 }
 
-// Login function
 function login(){
  const name = document.getElementById("login-name").value;
  const phone = document.getElementById("login-phone").value;
@@ -112,7 +98,6 @@ function login(){
  renderAccount();
 }
 
-// Logout
 function logout(){
  localStorage.removeItem("currentUser");
  currentUser=null;
