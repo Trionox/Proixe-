@@ -9,9 +9,10 @@ header{background:#2c3e50;color:white;padding:15px 20px;display:flex;justify-con
 header h1{margin:0;font-size:22px;}
 header nav a{color:white;margin-left:15px;text-decoration:none;font-weight:bold;}
 header nav a:hover{text-decoration:underline;}
-.account-box{max-width:500px;margin:20px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
-.account-box h2{text-align:center;}
-.account-box div{margin:10px 0;}
+.account-box, #login-form{max-width:500px;margin:20px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+.account-box h2,#login-form h3{text-align:center;}
+.account-box div, #login-form input{margin:10px 0;}
+#login-form input{width:100%;padding:10px;border-radius:5px;border:1px solid #ccc;}
 button{padding:10px 15px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;}
 button:hover{background:#1d6fa5;}
 .order-item{background:#f1f1f1;padding:10px;margin:5px 0;border-radius:5px;}
@@ -28,7 +29,17 @@ button:hover{background:#1d6fa5;}
 </nav>
 </header>
 
-<div class="account-box" id="account-box">
+<!-- Login Form -->
+<div id="login-form">
+<h3>Login</h3>
+<input type="text" id="login-name" placeholder="Name">
+<input type="text" id="login-phone" placeholder="Phone">
+<input type="text" id="login-address" placeholder="Address">
+<button onclick="login()">Login</button>
+</div>
+
+<!-- Account Info -->
+<div class="account-box" id="account-box" style="display:none;">
 <h2>Your Account</h2>
 <div id="user-info"></div>
 <h3>Orders:</h3>
@@ -48,14 +59,20 @@ button:hover{background:#1d6fa5;}
 // Check if user is logged in
 let currentUser = JSON.parse(localStorage.getItem("currentUser"))||null;
 
+// Show login or account info
 function renderAccount(){
- const userBox=document.getElementById("user-info");
- const ordersBox=document.getElementById("orders-list");
+ const loginForm = document.getElementById("login-form");
+ const accountBox = document.getElementById("account-box");
  if(!currentUser){
-   userBox.innerHTML="<p>Please login first.</p>";
-   ordersBox.innerHTML="";
+   loginForm.style.display="block";
+   accountBox.style.display="none";
    return;
  }
+ loginForm.style.display="none";
+ accountBox.style.display="block";
+
+ const userBox=document.getElementById("user-info");
+ const ordersBox=document.getElementById("orders-list");
 
  userBox.innerHTML = `
    <div><strong>Name:</strong> ${currentUser.name}</div>
@@ -83,10 +100,24 @@ function renderAccount(){
  }
 }
 
+// Login function
+function login(){
+ const name = document.getElementById("login-name").value;
+ const phone = document.getElementById("login-phone").value;
+ const address = document.getElementById("login-address").value;
+ if(!name||!phone||!address){ alert("Fill all fields"); return; }
+ currentUser = {name, phone, address};
+ localStorage.setItem("currentUser", JSON.stringify(currentUser));
+ alert("Logged in successfully!");
+ renderAccount();
+}
+
+// Logout
 function logout(){
  localStorage.removeItem("currentUser");
+ currentUser=null;
  alert("Logged out successfully");
- window.location.href="index.html";
+ renderAccount();
 }
 
 renderAccount();
