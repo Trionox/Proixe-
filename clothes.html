@@ -2,34 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Cart - Proixe Store</title>
+  <title>Clothes - Proixe Store</title>
   <style>
     body { font-family: Arial, sans-serif; background:#f9f9f9; margin:0; padding:0; }
     header { background:#2c3e50; color:#fff; padding:15px; text-align:center; }
     nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
     nav a:hover { text-decoration:underline; }
     nav { margin-top:10px; }
-    .cart-container { margin:30px; }
-    table { width:100%; border-collapse: collapse; }
-    th, td { border:1px solid #ddd; padding:10px; text-align:center; }
-    th { background:#3498db; color:#fff; }
-    .total { margin-top:20px; text-align:right; font-size:20px; font-weight:bold; }
-    .qty-btn {
-      padding:5px 10px; margin:0 3px; background:#3498db; color:white; border:none; border-radius:5px; cursor:pointer;
+    .section { padding:20px; }
+    .products { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
+    .product-card {
+      background:white; padding:15px; width:220px; border-radius:10px;
+      box-shadow:0 2px 6px rgba(0,0,0,0.2); text-align:center;
     }
-    .qty-btn:hover { background:#1d6fa5; }
-    .remove-btn {
-      padding:5px 10px; background:red; color:white; border:none; cursor:pointer; border-radius:5px;
-    }
-    .remove-btn:hover { background:darkred; }
+    .product-card img { width:180px; height:180px; object-fit:cover; border-radius:8px; }
     .old-price { text-decoration: line-through; color: grey; margin-right:5px; }
     .new-price { color: green; font-weight: bold; }
+    .qty-btn {
+      padding:8px 15px; margin-top:10px; background:#3498db; 
+      color:white; border:none; border-radius:5px; cursor:pointer;
+    }
+    .qty-btn:hover { background:#1d6fa5; }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Your Shopping Cart</h1>
+  <h1>Clothes Collection</h1>
   <nav>
     <a href="index.html">Home</a>
     <a href="plants.html">Plants</a>
@@ -39,99 +38,54 @@
   </nav>
 </header>
 
-<div class="cart-container">
-  <table id="cartTable">
-    <tr>
-      <th>Product</th>
-      <th>Price</th>
-      <th>Quantity</th>
-      <th>Total</th>
-      <th>Action</th>
-    </tr>
-  </table>
-  <div class="total" id="totalPrice">Total: ₹0</div>
+<div class="section">
+  <h2 style="text-align:center;">Trendy Clothes</h2>
+  <div class="products">
+
+    <!-- Normal T-Shirt -->
+    <div class="product-card">
+      <img src="https://m.media-amazon.com/images/I/71VVZ+qvJGL.jpg" alt="Normal T-Shirt">
+      <h3>Normal T-Shirt</h3>
+      <p><span class="old-price">₹360</span> <span class="new-price">₹170</span></p>
+      <button class="qty-btn" onclick="addToCart('Normal T-Shirt', 170, 360)">+ Add to Cart</button>
+    </div>
+
+    <!-- Modern T-Shirt -->
+    <div class="product-card">
+      <img src="https://m.media-amazon.com/images/I/71X6SlT7fVL.jpg" alt="Modern T-Shirt">
+      <h3>Modern T-Shirt</h3>
+      <p><span class="old-price">₹400</span> <span class="new-price">₹250</span></p>
+      <button class="qty-btn" onclick="addToCart('Modern T-Shirt', 250, 400)">+ Add to Cart</button>
+    </div>
+
+    <!-- Socks Pack -->
+    <div class="product-card">
+      <img src="https://m.media-amazon.com/images/I/71-7UkJbJdL.jpg" alt="Socks Pack">
+      <h3>Socks Pack</h3>
+      <p><span class="old-price">₹50</span> <span class="new-price">₹20</span></p>
+      <button class="qty-btn" onclick="addToCart('Socks Pack', 20, 50)">+ Add to Cart</button>
+    </div>
+
+  </div>
 </div>
 
 <script>
-  function loadCart(){
+  function addToCart(name, price, originalPrice){
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let table = document.getElementById("cartTable");
-    let total = 0;
-
+    let found = false;
     for(let i=0; i<cart.length; i++){
-      let row = table.insertRow();
-
-      // Product name
-      row.insertCell(0).innerHTML = cart[i].name;
-
-      // Price (old + new)
-      let priceCell = row.insertCell(1);
-      if(cart[i].originalPrice && cart[i].originalPrice > cart[i].price){
-        priceCell.innerHTML = 
-          "<span class='old-price'>₹" + cart[i].originalPrice + "</span>" + 
-          "<span class='new-price'>₹" + cart[i].price + "</span>";
-      } else {
-        priceCell.innerHTML = "₹" + cart[i].price;
+      if(cart[i].name === name){
+        cart[i].qty = (cart[i].qty || 1) + 1;
+        found = true;
+        break;
       }
-
-      // Quantity with +/-
-      let qtyCell = row.insertCell(2);
-      let minusBtn = document.createElement("button");
-      minusBtn.innerText = "-";
-      minusBtn.className = "qty-btn";
-      minusBtn.onclick = function(){ changeQty(i, -1); };
-
-      let qtySpan = document.createElement("span");
-      qtySpan.innerText = cart[i].qty || 1;
-      qtySpan.id = "qty-"+i;
-
-      let plusBtn = document.createElement("button");
-      plusBtn.innerText = "+";
-      plusBtn.className = "qty-btn";
-      plusBtn.onclick = function(){ changeQty(i, 1); };
-
-      qtyCell.appendChild(minusBtn);
-      qtyCell.appendChild(qtySpan);
-      qtyCell.appendChild(plusBtn);
-
-      // Item total
-      let itemTotal = (cart[i].qty || 1) * cart[i].price;
-      row.insertCell(3).innerHTML = "₹" + itemTotal;
-
-      // Remove button
-      let removeBtn = document.createElement("button");
-      removeBtn.innerText = "Remove";
-      removeBtn.className = "remove-btn";
-      removeBtn.onclick = function(){ removeFromCart(i); };
-      row.insertCell(4).appendChild(removeBtn);
-
-      total += itemTotal;
     }
-
-    document.getElementById("totalPrice").innerText = "Total: ₹" + total;
-  }
-
-  function changeQty(index, change){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    if(!cart[index].qty){ cart[index].qty = 1; }
-    cart[index].qty += change;
-
-    if(cart[index].qty <= 0){
-      cart.splice(index, 1);
+    if(!found){
+      cart.push({name:name, price:price, originalPrice:originalPrice, qty:1});
     }
-
     localStorage.setItem('cart', JSON.stringify(cart));
-    location.reload();
+    alert(name + " added to cart!");
   }
-
-  function removeFromCart(index){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    cart.splice(index, 1);
-    localStorage.setItem('cart', JSON.stringify(cart));
-    location.reload();
-  }
-
-  window.onload = loadCart;
 </script>
 
 </body>
