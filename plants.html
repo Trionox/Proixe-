@@ -4,102 +4,54 @@
   <meta charset="UTF-8">
   <title>Plants - Proixe Store</title>
   <style>
-    body { font-family: Arial, sans-serif; background:#f9f9f9; margin:0; padding:0; }
-    header { background:#2c3e50; color:#fff; padding:15px; text-align:center; }
-    nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
-    nav a:hover { text-decoration:underline; }
-    nav { margin-top:10px; }
-    .section { padding:20px; }
-    .products { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
-    .product-card {
-      background:white; padding:15px; width:220px; border-radius:10px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.2); text-align:center;
+    body { margin:0; font-family:Arial, sans-serif; background:#f9f9f9; padding-bottom:60px; }
+    header { background:#2c3e50; color:white; padding:15px; text-align:center; position:fixed; top:0; left:0; right:0; z-index:1000; }
+    header h1 { margin:0; font-size:20px; display:inline-block; }
+    header .cart { float:right; margin-right:20px; }
+
+    .products { margin-top:70px; display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:20px; }
+    .product { background:white; padding:15px; width:200px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2); text-align:center; }
+    .product img { width:100%; height:150px; object-fit:cover; border-radius:8px; }
+    .product button { margin-top:10px; padding:8px 15px; background:#27ae60; border:none; color:white; border-radius:5px; cursor:pointer; }
+    .product button:hover { background:#1e8449; }
+
+    .bottom-nav {
+      position:fixed; bottom:0; left:0; right:0;
+      background:#2c3e50; color:white;
+      display:flex; justify-content:space-around;
+      padding:10px 0;
     }
-    .product-card img { width:180px; height:150px; object-fit:cover; border-radius:8px; }
-    .old-price { text-decoration: line-through; color: grey; margin-right:5px; }
-    .new-price { color: green; font-weight: bold; }
-    .qty-btn {
-      padding:8px 15px; margin-top:10px; background:#3498db; 
-      color:white; border:none; border-radius:5px; cursor:pointer;
-    }
-    .qty-btn:hover { background:#1d6fa5; }
+    .bottom-nav a { color:white; text-decoration:none; font-size:14px; }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Proixe Store</h1>
+    <div class="cart"><a href="cart.html" style="color:white; text-decoration:none;">🛒 Cart</a></div>
+  </header>
 
-<header>
-  <h1>Plants Collection</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="plants.html">Plants</a>
-    <a href="grocery.html">Grocery</a>
-    <a href="clothes.html">Clothes</a>
-    <a href="cart.html">Cart</a>
-  </nav>
-</header>
-
-<div class="section">
-  <h2 style="text-align:center;">Buy Fresh Plants</h2>
   <div class="products">
-
-    <!-- Tulsi Plant -->
-    <div class="product-card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0b/Holy_basil.jpg" alt="Tulsi Plant">
-      <h3>Tulsi Plant</h3>
-      <p><span class="old-price">₹40</span> <span class="new-price">₹30</span></p>
-      <button class="qty-btn" onclick="addToCart('Tulsi Plant', 30, 40)">+ Add to Cart</button>
-    </div>
-
-    <!-- Normal Plant -->
-    <div class="product-card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/4/45/A_small_plant.jpg" alt="Normal Plant">
-      <h3>Normal Plant</h3>
-      <p><span class="old-price">₹150</span> <span class="new-price">₹100</span></p>
-      <button class="qty-btn" onclick="addToCart('Normal Plant', 100, 150)">+ Add to Cart</button>
-    </div>
-
-    <!-- Aloe Vera -->
-    <div class="product-card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Aloe_vera_flower_inset.JPG" alt="Aloe Vera Plant">
-      <h3>Aloe Vera Plant</h3>
-      <p><span class="old-price">₹100</span> <span class="new-price">₹70</span></p>
-      <button class="qty-btn" onclick="addToCart('Aloe Vera Plant', 70, 100)">+ Add to Cart</button>
-    </div>
-
-    <!-- Khad Small Pack -->
-    <div class="product-card">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Fertilizer_bags.jpg" alt="Khad Small Pack">
-      <h3>Khad (Small Pack)</h3>
-      <p><span class="old-price">₹100</span> <span class="new-price">₹60</span></p>
-      <button class="qty-btn" onclick="addToCart('Khad Small Pack', 60, 100)">+ Add to Cart</button>
-    </div>
-
+    <div class="product"><img src="https://picsum.photos/200/150?random=1"><h3>Tulsi Plant</h3><p><s>₹40</s> ₹30</p><button onclick="addToCart('Tulsi Plant',30)">Add to Cart</button></div>
+    <div class="product"><img src="https://picsum.photos/200/150?random=2"><h3>Normal Plant</h3><p><s>₹150</s> ₹100</p><button onclick="addToCart('Normal Plant',100)">Add to Cart</button></div>
+    <div class="product"><img src="https://picsum.photos/200/150?random=3"><h3>Aloe Vera</h3><p><s>₹100</s> ₹70</p><button onclick="addToCart('Aloe Vera',70)">Add to Cart</button></div>
+    <div class="product"><img src="https://picsum.photos/200/150?random=4"><h3>Khad (Small Pack)</h3><p><s>₹100</s> ₹60</p><button onclick="addToCart('Khad Small Pack',60)">Add to Cart</button></div>
   </div>
-</div>
 
-<script>
-  function addToCart(name, price, originalPrice){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+  <div class="bottom-nav">
+    <a href="index.html">🏠 Home</a>
+    <a href="plants.html">🌱 Plants</a>
+    <a href="grocery.html">🛍 Grocery</a>
+    <a href="clothes.html">👕 Clothes</a>
+    <a href="account.html">👤 Account</a>
+  </div>
 
-    // अगर प्रोडक्ट पहले से है तो quantity बढ़ा दो
-    let found = false;
-    for(let i=0; i<cart.length; i++){
-      if(cart[i].name === name){
-        cart[i].qty = (cart[i].qty || 1) + 1;
-        found = true;
-        break;
-      }
+  <script>
+    function addToCart(name, price){
+      let cart = JSON.parse(localStorage.getItem("cart")) || [];
+      cart.push({name, price});
+      localStorage.setItem("cart", JSON.stringify(cart));
+      alert(name + " added to cart!");
     }
-
-    // नया प्रोडक्ट add करना है
-    if(!found){
-      cart.push({name:name, price:price, originalPrice:originalPrice, qty:1});
-    }
-
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert(name + " added to cart!");
-  }
-</script>
-
+  </script>
 </body>
 </html>
