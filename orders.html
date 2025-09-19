@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Proixe Store - My Orders</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f9f9f9; padding-bottom:70px; }
+    header { background:#2c3e50; color:white; padding:15px; text-align:center; }
+    .orders { padding:20px; }
+    .order { background:white; padding:15px; margin-bottom:15px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
+    .order h3 { margin-top:0; color:#2c3e50; }
+    ul { margin:0; padding:0; list-style:none; }
+    li { margin:5px 0; }
+    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#2c3e50; display:flex; justify-content:space-around; padding:10px 0; }
+    .bottom-nav a { color:white; text-decoration:none; font-weight:bold; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h2>My Orders</h2>
+</header>
+
+<div class="orders" id="ordersList"></div>
+
+<div class="bottom-nav">
+  <a href="index.html">Home</a>
+  <a href="plants.html">Plants</a>
+  <a href="grocery.html">Grocery</a>
+  <a href="clothes.html">Clothes</a>
+  <a href="account.html">Account</a>
+</div>
+
+<script>
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  let ordersList = document.getElementById("ordersList");
+
+  if(orders.length === 0) {
+    ordersList.innerHTML = "<p>No orders found.</p>";
+  } else {
+    orders.forEach((order, index) => {
+      let itemsHTML = "<ul>";
+      order.items.forEach(item => {
+        itemsHTML += <li>${item.name} - ₹${item.price}</li>;
+      });
+      itemsHTML += "</ul>";
+
+      ordersList.innerHTML += `
+        <div class="order">
+          <h3>Order #${index + 1}</h3>
+          <p><b>Name:</b> ${order.name}</p>
+          <p><b>Address:</b> ${order.address}</p>
+          <p><b>Phone:</b> ${order.phone}</p>
+          <p><b>Payment:</b> ${order.payment}</p>
+          <p><b>Date:</b> ${order.date}</p>
+          <p><b>Items:</b> ${itemsHTML}</p>
+        </div>
+      `;
+    });
+  }
+</script>
+
+</body>
+</html>
