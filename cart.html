@@ -1,81 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Proixe Store - Cart</title>
-  <style>
-    body { font-family: Arial, sans-serif; background:#f9f9f9; padding-bottom:70px; }
-    header { background:#2c3e50; color:white; padding:15px; text-align:center; }
-    .cart-items { padding:20px; }
-    .item { background:white; padding:10px; margin-bottom:10px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; }
-    button { padding:5px 10px; border:none; border-radius:5px; background:#e74c3c; color:white; cursor:pointer; }
-    button:hover { background:#c0392b; }
-    .total { font-size:18px; font-weight:bold; margin:20px; }
-    .purchase { display:block; margin:20px auto; padding:10px 20px; background:#27ae60; color:white; border:none; border-radius:5px; cursor:pointer; font-size:16px; }
-    .purchase:hover { background:#1e8449; }
-    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#2c3e50; display:flex; justify-content:space-around; padding:10px 0; }
-    .bottom-nav a { color:white; text-decoration:none; font-weight:bold; }
-  </style>
+<meta charset="UTF-8">
+<title>Cart - Proixe Store</title>
+<style>
+body{font-family:Arial,sans-serif;background:#f9f9f9;padding-bottom:70px;margin:0;}
+header{background:#2c3e50;color:white;padding:15px 20px;display:flex;justify-content:space-between;align-items:center;}
+header h1{margin:0;font-size:22px;}
+header nav a{color:white;margin-left:15px;text-decoration:none;font-weight:bold;}
+header nav a:hover{text-decoration:underline;}
+.cart-items{margin:20px;}
+.cart-item{background:white;margin:10px;padding:10px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);display:flex;align-items:center;justify-content:space-between;}
+.cart-item img{width:60px;border-radius:5px;}
+.cart-item button{padding:5px;margin-left:5px;}
+.footer-nav{position:fixed;bottom:0;left:0;right:0;background:#2c3e50;display:flex;justify-content:space-around;padding:10px 0;}
+.footer-nav a{color:white;text-decoration:none;font-weight:bold;font-size:14px;}
+</style>
 </head>
 <body>
-
 <header>
-  <h2>Your Cart</h2>
+<h1>Proixe Store</h1>
+<nav>
+<a href="account.html">Account</a>
+<a href="cart.html">Cart</a>
+</nav>
 </header>
 
-<div class="cart-items" id="cartItems"></div>
-<div class="total" id="totalPrice">Total: ₹0</div>
-<button class="purchase" onclick="purchase()">Proceed to Purchase</button>
+<h2 style="text-align:center;">Cart</h2>
+<div class="cart-items" id="cart-items"></div>
+<h3 style="text-align:center;" id="total">Total: ₹0</h3>
+<div style="text-align:center;"><button onclick="checkout()">Proceed to Checkout</button></div>
 
-<div class="bottom-nav">
-  <a href="index.html">Home</a>
-  <a href="plants.html">Plants</a>
-  <a href="grocery.html">Grocery</a>
-  <a href="clothes.html">Clothes</a>
-  <a href="account.html">Account</a>
+<div class="footer-nav">
+<a href="index.html">Home</a>
+<a href="plants.html">Plants</a>
+<a href="grocery.html">Grocery</a>
+<a href="clothes.html">Clothes</a>
+<a href="account.html">Account</a>
 </div>
 
 <script>
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-  let cartItemsDiv = document.getElementById("cartItems");
-  let totalPriceDiv = document.getElementById("totalPrice");
+function renderCart(){
+ let cart=JSON.parse(localStorage.getItem("cart"))||[];
+ const container=document.getElementById("cart-items");
+ container.innerHTML="";
+ let total=0;
 
-  function renderCart() {
-    cartItemsDiv.innerHTML = "";
-    let total = 0;
-    cart.forEach((item, index) => {
-      total += item.price;
-      cartItemsDiv.innerHTML += `
-        <div class="item">
-          <span>${item.name} - ₹${item.price}</span>
-          <button onclick="removeItem(${index})">Remove</button>
-        </div>
-      `;
-    });
-    totalPriceDiv.innerText = "Total: ₹" + total;
-  }
+ cart.forEach((p,i)=>{
+   total+=p.discount*p.qty;
+   const div=document.createElement("div");
+   div.className="cart-item";
+   div.innerHTML=`
+     <img src="${p.img}" alt="${p.name}">
+     <span>${p.name} x ${p.qty}</span>
+     <span>₹${p.discount*p.qty}</span>
+     <button onclick="removeItem(${i})">Remove</button>
+   `;
+   container.appendChild(div);
+ });
+ document.getElementById("total").innerText="Total: ₹"+total;
+}
 
-  function removeItem(i) {
-    cart.splice(i, 1);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    renderCart();
-  }
+function removeItem(index){
+ let cart=JSON.parse(localStorage.getItem("cart"))||[];
+ cart.splice(index,1);
+ localStorage.setItem("cart",JSON.stringify(cart));
+ renderCart();
+}
 
-  function purchase() {
-    if(cart.length === 0) {
-      alert("Cart is empty!");
-      return;
-    }
-    let address = prompt("Enter your address:");
-    let phone = prompt("Enter your phone number:");
-    alert("Thank you! Your order has been placed.\nAddress: " + address + "\nPhone: " + phone);
-    localStorage.removeItem("cart");
-    cart = [];
-    renderCart();
-  }
+function checkout(){
+ window.location.href="checkout.html";
+}
 
-  renderCart();
+renderCart();
 </script>
-
 </body>
 </html>
