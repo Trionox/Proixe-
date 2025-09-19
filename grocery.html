@@ -2,97 +2,70 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Grocery - Proixe Store</title>
+  <title>Proixe Store - Grocery</title>
   <style>
-    body { font-family: Arial, sans-serif; background:#f9f9f9; margin:0; padding:0; }
-    header { background:#2c3e50; color:#fff; padding:15px; text-align:center; }
-    nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
-    nav a:hover { text-decoration:underline; }
-    nav { margin-top:10px; }
-    .section { padding:20px; }
-    .products { display:flex; flex-wrap:wrap; gap:20px; justify-content:center; }
-    .product-card {
-      background:white; padding:15px; width:220px; border-radius:10px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.2); text-align:center;
-    }
-    .product-card img { width:180px; height:150px; object-fit:cover; border-radius:8px; }
-    .old-price { text-decoration: line-through; color: grey; margin-right:5px; }
-    .new-price { color: green; font-weight: bold; }
-    .qty-btn {
-      padding:8px 15px; margin-top:10px; background:#3498db; 
-      color:white; border:none; border-radius:5px; cursor:pointer;
-    }
-    .qty-btn:hover { background:#1d6fa5; }
+    body { margin:0; font-family: Arial, sans-serif; background:#f9f9f9; }
+    header { background:#2c3e50; color:white; padding:15px; text-align:center; }
+    header a { color:white; text-decoration:none; font-weight:bold; }
+    .products { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; padding:20px; }
+    .card { background:white; padding:15px; width:200px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2); text-align:center; }
+    .card img { width:100%; border-radius:10px; }
+    button { margin-top:10px; padding:8px 12px; background:#3498db; color:white; border:none; border-radius:5px; cursor:pointer; }
+    button:hover { background:#1d6fa5; }
+    .bottom-nav { position:fixed; bottom:0; left:0; right:0; background:#2c3e50; display:flex; justify-content:space-around; padding:10px 0; }
+    .bottom-nav a { color:white; text-decoration:none; font-weight:bold; }
   </style>
 </head>
 <body>
 
 <header>
-  <h1>Grocery Items</h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="plants.html">Plants</a>
-    <a href="grocery.html">Grocery</a>
-    <a href="clothes.html">Clothes</a>
-    <a href="cart.html">Cart</a>
-  </nav>
+  <h2>Grocery</h2>
+  <a href="cart.html">🛒 Cart</a>
 </header>
 
-<div class="section">
-  <h2 style="text-align:center;">Daily Essentials</h2>
+<main>
   <div class="products">
-
-    <!-- Kurkure -->
-    <div class="product-card">
-      <img src="https://m.media-amazon.com/images/I/81QzW82dY3L.jpg" alt="Kurkure">
+    <div class="card">
+      <img src="https://m.media-amazon.com/images/I/81yKp8-H4rL._AC_UL480_FMwebp_QL65_.jpg" alt="Kurkure">
       <h3>Kurkure</h3>
-      <p><span class="old-price">₹10</span> <span class="new-price">₹9</span></p>
-      <button class="qty-btn" onclick="addToCart('Kurkure', 9, 10)">+ Add to Cart</button>
+      <p><del>₹10</del> ₹9</p>
+      <button onclick="addToCart('Kurkure', 9)">Add to Cart</button>
     </div>
-
-    <!-- Chips -->
-    <div class="product-card">
-      <img src="https://m.media-amazon.com/images/I/81YwQOSWpwL.jpg" alt="Chips">
-      <h3>Potato Chips</h3>
-      <p><span class="old-price">₹10</span> <span class="new-price">₹9</span></p>
-      <button class="qty-btn" onclick="addToCart('Potato Chips', 9, 10)">+ Add to Cart</button>
+    <div class="card">
+      <img src="https://m.media-amazon.com/images/I/81oxxW9mEqL._AC_UL480_FMwebp_QL65_.jpg" alt="Chips">
+      <h3>Chips</h3>
+      <p><del>₹10</del> ₹9</p>
+      <button onclick="addToCart('Chips', 9)">Add to Cart</button>
     </div>
-
-    <!-- Coke Can -->
-    <div class="product-card">
-      <img src="https://m.media-amazon.com/images/I/61tC6CBcYdL.jpg" alt="Coca Cola Can">
-      <h3>Coca Cola (Can)</h3>
-      <p><span class="old-price">₹90</span> <span class="new-price">₹70</span></p>
-      <button class="qty-btn" onclick="addToCart('Coca Cola Can', 70, 90)">+ Add to Cart</button>
+    <div class="card">
+      <img src="https://m.media-amazon.com/images/I/71kgWcCWGHL._AC_UL480_FMwebp_QL65_.jpg" alt="Coke Can">
+      <h3>Coke Can</h3>
+      <p><del>₹100</del> ₹70</p>
+      <button onclick="addToCart('Coke Can', 70)">Add to Cart</button>
     </div>
-
-    <!-- Maggi -->
-    <div class="product-card">
-      <img src="https://m.media-amazon.com/images/I/71m-Jz8bWPL.jpg" alt="Maggi Pack">
-      <h3>Maggi (2 Pack)</h3>
-      <p><span class="old-price">₹25</span> <span class="new-price">₹18</span></p>
-      <button class="qty-btn" onclick="addToCart('Maggi 2 Pack', 18, 25)">+ Add to Cart</button>
+    <div class="card">
+      <img src="https://m.media-amazon.com/images/I/81F49K5Qn3L._AC_UL480_FMwebp_QL65_.jpg" alt="Maggi Pack">
+      <h3>Mario Maggi (2 Pack)</h3>
+      <p><del>₹25</del> ₹18</p>
+      <button onclick="addToCart('Maggi 2 Pack', 18)">Add to Cart</button>
     </div>
-
   </div>
+</main>
+
+<div class="bottom-nav">
+  <a href="index.html">Home</a>
+  <a href="plants.html">Plants</a>
+  <a href="grocery.html">Grocery</a>
+  <a href="clothes.html">Clothes</a>
+  <a href="account.html">Account</a>
 </div>
 
 <script>
-  function addToCart(name, price, originalPrice){
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let found = false;
-    for(let i=0; i<cart.length; i++){
-      if(cart[i].name === name){
-        cart[i].qty = (cart[i].qty || 1) + 1;
-        found = true;
-        break;
-      }
-    }
-    if(!found){
-      cart.push({name:name, price:price, originalPrice:originalPrice, qty:1});
-    }
-    localStorage.setItem('cart', JSON.stringify(cart));
-    alert(name + " added to cart!");
+  function addToCart(product, price) {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({ name: product, price: price });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert(product + " added to cart!");
   }
 </script>
 
