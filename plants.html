@@ -3,68 +3,80 @@
 <head>
   <meta charset="UTF-8">
   <title>Plants - Proixe Store</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    body{font-family:Arial, sans-serif; margin:0; background:#f9f9f9;}
-    header{background:#2c3e50;color:#fff;padding:18px;text-align:center;}
-    nav a{color:#fff;margin:0 10px;text-decoration:none;font-weight:bold;}
-    .container{max-width:1000px;margin:30px auto;padding:0 15px;}
-    .products{display:flex;flex-wrap:wrap;gap:16px;justify-content:center;}
-    .product-card{background:#fff;padding:15px;border-radius:10px;
-      box-shadow:0 2px 6px rgba(0,0,0,0.12);width:220px;text-align:center;}
-    .product-card img{width:100%;border-radius:6px;}
-    .product-card h3{margin:8px 0;}
-    .product-card p{margin:6px 0;color:#333;}
-    .btn{padding:8px 12px;border:none;border-radius:6px;background:#3498db;
-      color:#fff;cursor:pointer;}
-    .btn:hover{background:#1d6fa5;}
+    body { font-family: Arial, sans-serif; background:#f9f9f9; margin:0; padding:0; }
+    header { background:#2c3e50; color:#fff; padding:15px; text-align:center; }
+    nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
+    nav a:hover { text-decoration:underline; }
+    nav { margin-top:10px; }
+    .products { display:flex; justify-content:space-around; flex-wrap:wrap; margin:30px; }
+    .product-card {
+      background:#fff; width:220px; margin:10px; padding:15px; text-align:center;
+      border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2);
+    }
+    .product-card img { width:100%; border-radius:8px; }
+    .old-price { text-decoration: line-through; color: gray; margin-right:5px; }
+    .new-price { font-weight:bold; color: green; }
+    button { margin-top:10px; padding:8px 12px; background:#3498db; border:none; color:#fff; border-radius:5px; cursor:pointer; }
+    button:hover { background:#1d6fa5; }
+    footer { background:#2c3e50; color:white; text-align:center; padding:15px; margin-top:30px; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Proixe Store</h1>
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="plants.html">Plants</a>
-      <a href="grocery.html">Grocery</a>
-      <a href="clothes.html">Clothes</a>
-      <a href="cart.html">Cart</a>
-    </nav>
-  </header>
 
-  <div class="container">
-    <h2 style="text-align:center;">Plants - Green & Fresh</h2>
-    <div class="products">
-      <div class="product-card">
-        <img src="https://picsum.photos/200?plant1" alt="Aloe Vera">
-        <h3>Aloe Vera</h3>
-        <p>₹150</p>
-        <button class="btn" onclick="addToCart('Aloe Vera',150)">Add to Cart</button>
-      </div>
+<header>
+  <h1>Plants Collection</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="plants.html">Plants</a>
+    <a href="grocery.html">Grocery</a>
+    <a href="clothes.html">Clothes</a>
+    <a href="cart.html">Cart</a>
+  </nav>
+</header>
 
-      <div class="product-card">
-        <img src="https://picsum.photos/200?plant2" alt="Money Plant">
-        <h3>Money Plant</h3>
-        <p>₹120</p>
-        <button class="btn" onclick="addToCart('Money Plant',120)">Add to Cart</button>
-      </div>
-
-      <div class="product-card">
-        <img src="https://picsum.photos/200?plant3" alt="Snake Plant">
-        <h3>Snake Plant</h3>
-        <p>₹200</p>
-        <button class="btn" onclick="addToCart('Snake Plant',200)">Add to Cart</button>
-      </div>
-    </div>
+<div class="products">
+  <div class="product-card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/65/Holy_basil.jpg" alt="Tulsi Plant">
+    <h3>Tulsi Plant</h3>
+    <p><span class="old-price">₹40</span> <span class="new-price">₹30</span></p>
+    <button onclick="addToCart('Tulsi Plant',30)">Add to Cart</button>
   </div>
 
-  <script>
-    function addToCart(name, price){
-      let cart = JSON.parse(localStorage.getItem('cart')) || [];
-      cart.push({name: name, price: price});
-      localStorage.setItem('cart', JSON.stringify(cart));
-      alert(name + ' added to cart!');
-    }
-  </script>
+  <div class="product-card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6f/Areca_palm.jpg" alt="Normal Plant">
+    <h3>Normal Plant</h3>
+    <p><span class="old-price">₹150</span> <span class="new-price">₹100</span></p>
+    <button onclick="addToCart('Normal Plant',100)">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/5/57/Aloe_vera_flower.JPG" alt="Aloe Vera">
+    <h3>Aloe Vera</h3>
+    <p><span class="old-price">₹100</span> <span class="new-price">₹70</span></p>
+    <button onclick="addToCart('Aloe Vera',70)">Add to Cart</button>
+  </div>
+
+  <div class="product-card">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/8/87/Fertilizer_bag.jpg" alt="Khad Small Pack">
+    <h3>Khad (Small Pack)</h3>
+    <p><span class="old-price">₹100</span> <span class="new-price">₹60</span></p>
+    <button onclick="addToCart('Khad Small Pack',60)">Add to Cart</button>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 Proixe Store | All Rights Reserved</p>
+</footer>
+
+<script>
+  function addToCart(name, price){
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({name: name, price: price});
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(name + " added to cart!");
+  }
+</script>
+
 </body>
 </html>
