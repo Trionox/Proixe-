@@ -9,7 +9,7 @@ header{background:#2c3e50;color:white;padding:15px 20px;display:flex;justify-con
 header h1{margin:0;font-size:22px;}
 header nav a{color:white;margin-left:15px;text-decoration:none;font-weight:bold;}
 header nav a:hover{text-decoration:underline;}
-#account-info{max-width:500px;margin:30px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+#account-info{max-width:600px;margin:30px auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
 form input{width:100%;padding:10px;margin:10px 0;border-radius:5px;border:1px solid #ccc;}
 form button{padding:10px 15px;background:#3498db;color:white;border:none;border-radius:5px;cursor:pointer;}
 form button:hover{background:#1d6fa5;}
@@ -42,30 +42,55 @@ form button:hover{background:#1d6fa5;}
 </div>
 
 <script>
+// Login function
 function login(){
  const username=document.getElementById("username").value;
  if(!username){ alert("Enter name"); return; }
- const user={name:username,orders:JSON.parse(localStorage.getItem("orders"))||[]};
+
+ let orders=JSON.parse(localStorage.getItem("orders"))||[];
+
+ const user={
+   name:username,
+   orders: orders.map(o=>({items:o.items,total:o.total,phone:o.phone,address:o.address}))
+ };
+
  localStorage.setItem("user",JSON.stringify(user));
  renderAccount();
 }
 
+// Render account info
 function renderAccount(){
  const user=JSON.parse(localStorage.getItem("user"));
  if(!user) return;
- document.getElementById("account-info").innerHTML=`
-   <h3>Welcome, ${user.name}</h3>
-   <button onclick="logout()">Logout</button>
-   <h4>Your Orders:</h4>
-   <pre>${JSON.stringify(user.orders,null,2)}</pre>
- `;
+
+ let html=<h3>Welcome, ${user.name}</h3>;
+ html+=<button onclick="logout()">Logout</button>;
+ html+=<h4>Your Orders:</h4>;
+
+ if(user.orders.length===0){
+   html+=<p>No orders yet.</p>;
+ } else {
+   user.orders.forEach((o,idx)=>{
+     html+=`<div style="border:1px solid #ccc;margin:10px;padding:10px;border-radius:5px;">
+       <strong>Order ${idx+1}</strong><br>
+       Phone: ${o.phone}<br>
+       Address: ${o.address}<br>
+       Total: ₹${o.total}<br>
+       Items: <pre>${JSON.stringify(o.items,null,2)}</pre>
+     </div>`;
+   });
+ }
+
+ document.getElementById("account-info").innerHTML=html;
 }
 
+// Logout function
 function logout(){
  localStorage.removeItem("user");
  location.reload();
 }
 
+// Initial render
 renderAccount();
 </script>
 </body>
