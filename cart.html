@@ -14,8 +14,16 @@
     th, td { border:1px solid #ddd; padding:10px; text-align:center; }
     th { background:#3498db; color:#fff; }
     .total { margin-top:20px; text-align:right; font-size:20px; font-weight:bold; }
-    button { padding:5px 10px; background:red; color:white; border:none; cursor:pointer; border-radius:5px; }
-    button:hover { background:darkred; }
+    .qty-btn {
+      padding:5px 10px; margin:0 3px; background:#3498db; color:white; border:none; border-radius:5px; cursor:pointer;
+    }
+    .qty-btn:hover { background:#1d6fa5; }
+    .remove-btn {
+      padding:5px 10px; background:red; color:white; border:none; cursor:pointer; border-radius:5px;
+    }
+    .remove-btn:hover { background:darkred; }
+    .old-price { text-decoration: line-through; color: grey; margin-right:5px; }
+    .new-price { color: green; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -36,6 +44,8 @@
     <tr>
       <th>Product</th>
       <th>Price</th>
+      <th>Quantity</th>
+      <th>Total</th>
       <th>Action</th>
     </tr>
   </table>
@@ -47,17 +57,71 @@
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
     let table = document.getElementById("cartTable");
     let total = 0;
+
     for(let i=0; i<cart.length; i++){
       let row = table.insertRow();
+
+      // Product name
       row.insertCell(0).innerHTML = cart[i].name;
-      row.insertCell(1).innerHTML = "₹" + cart[i].price;
+
+      // Price (old + new)
+      let priceCell = row.insertCell(1);
+      if(cart[i].originalPrice && cart[i].originalPrice > cart[i].price){
+        priceCell.innerHTML = 
+          "<span class='old-price'>₹" + cart[i].originalPrice + "</span>" + 
+          "<span class='new-price'>₹" + cart[i].price + "</span>";
+      } else {
+        priceCell.innerHTML = "₹" + cart[i].price;
+      }
+
+      // Quantity with +/-
+      let qtyCell = row.insertCell(2);
+      let minusBtn = document.createElement("button");
+      minusBtn.innerText = "-";
+      minusBtn.className = "qty-btn";
+      minusBtn.onclick = function(){ changeQty(i, -1); };
+
+      let qtySpan = document.createElement("span");
+      qtySpan.innerText = cart[i].qty || 1;
+      qtySpan.id = "qty-"+i;
+
+      let plusBtn = document.createElement("button");
+      plusBtn.innerText = "+";
+      plusBtn.className = "qty-btn";
+      plusBtn.onclick = function(){ changeQty(i, 1); };
+
+      qtyCell.appendChild(minusBtn);
+      qtyCell.appendChild(qtySpan);
+      qtyCell.appendChild(plusBtn);
+
+      // Item total
+      let itemTotal = (cart[i].qty || 1) * cart[i].price;
+      row.insertCell(3).innerHTML = "₹" + itemTotal;
+
+      // Remove button
       let removeBtn = document.createElement("button");
       removeBtn.innerText = "Remove";
+      removeBtn.className = "remove-btn";
       removeBtn.onclick = function(){ removeFromCart(i); };
-      row.insertCell(2).appendChild(removeBtn);
-      total += cart[i].price;
+      row.insertCell(4).appendChild(removeBtn);
+
+      total += itemTotal;
     }
+
     document.getElementById("totalPrice").innerText = "Total: ₹" + total;
+  }
+
+  function changeQty(index, change){
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    if(!cart[index].qty){ cart[index].qty = 1; }
+    cart[index].qty += change;
+
+    if(cart[index].qty <= 0){
+      cart.splice(index, 1);
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+    location.reload();
   }
 
   function removeFromCart(index){
