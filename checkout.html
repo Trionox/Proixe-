@@ -43,7 +43,7 @@ button:hover{background:#1d6fa5;}
 
 <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
 <script>
-emailjs.init("YOUR_PUBLIC_ID"); // <- yaha apna EmailJS public ID dal
+emailjs.init("4kwsQ7QvxZFeT3Nbr"); // <- yaha apna EmailJS public ID dal
 
 let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
@@ -86,7 +86,7 @@ document.getElementById("checkout-form").addEventListener("submit",function(e){
   localStorage.setItem("orders",JSON.stringify(orders));
 
   // Notify Owner via EmailJS
-  emailjs.send("YOUR_SERVICE_ID","YOUR_TEMPLATE_ID",{
+  emailjs.send("TRIO-45","template_5s8qx2e",{
     customer_name: order.customer.name,
     customer_address: order.customer.address,
     customer_phone: order.customer.phone,
