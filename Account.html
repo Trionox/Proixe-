@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Account - Proixe Store</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f9f9f9;}
+header{background:#2c3e50;color:white;padding:15px;text-align:center;}
+nav a{color:white;margin:0 15px;text-decoration:none;font-weight:bold;}
+nav a:hover{text-decoration:underline;}
+.container{max-width:900px;margin:auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+.section{margin-bottom:30px;}
+h2{margin-bottom:10px;}
+input,button{padding:10px;margin:5px 0;width:100%;border-radius:5px;border:1px solid #ccc;}
+button{background:#3498db;color:white;border:none;cursor:pointer;}
+button:hover{background:#1d6fa5;}
+.order-item{border-bottom:1px solid #ccc;padding:10px 0;}
+.order-item h4{margin:5px 0;}
+.order-products p{margin:2px 0;}
+.product-img{width:80px;height:80px;object-fit:cover;margin-right:10px;}
+.order-flex{display:flex;align-items:center;margin-bottom:5px;}
+.no-orders{color:#e74c3c;font-weight:bold;}
+</style>
+</head>
+<body>
+<header>
+<h1>Proixe Store</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="plants.html">Plants</a>
+<a href="grocery.html">Grocery</a>
+<a href="clothes.html">Clothes</a>
+<a href="cart.html">Cart</a>
+</nav>
+</header>
+
+<div class="container">
+
+  <!-- Login Section -->
+  <div class="section" id="login-section">
+    <h2>Login / Signup</h2>
+    <input type="text" id="username" placeholder="Enter Name">
+    <input type="email" id="useremail" placeholder="Enter Email">
+    <button onclick="login()">Login / Signup</button>
+  </div>
+
+  <!-- Account Section -->
+  <div class="section" id="account-section" style="display:none;">
+    <h2>Account Details</h2>
+    <p><strong>Name:</strong> <span id="acc-name"></span></p>
+    <p><strong>Email:</strong> <span id="acc-email"></span></p>
+    <p><strong>Address:</strong> <span id="acc-address">123 Street, City</span></p>
+
+    <h2>Your Orders</h2>
+    <div id="orders"></div>
+    <button onclick="logout()">Logout</button>
+  </div>
+
+</div>
+
+<script>
+// Simple Login / Signup
+function login(){
+  let name=document.getElementById("username").value;
+  let email=document.getElementById("useremail").value;
+  if(!name || !email){ alert("Enter both fields"); return; }
+  localStorage.setItem("currentUser", JSON.stringify({name,email}));
+  document.getElementById("login-section").style.display="none";
+  document.getElementById("account-section").style.display="block";
+  loadAccount();
+}
+
+function logout(){
+  localStorage.removeItem("currentUser");
+  document.getElementById("account-section").style.display="none";
+  document.getElementById("login-section").style.display="block";
+}
+
+// Load Account Info
+function loadAccount(){
+  let user = JSON.parse(localStorage.getItem("currentUser"));
+  if(!user) return;
+  document.getElementById("acc-name").innerText=user.name;
+  document.getElementById("acc-email").innerText=user.email;
+
+  // Load orders
+  let orders = JSON.parse(localStorage.getItem("orders")) || [];
+  const ordersContainer = document.getElementById("orders");
+  ordersContainer.innerHTML="";
+  let userOrders = orders.filter(o=>o.customer.email===user.email);
+
+  if(userOrders.length===0){
+    ordersContainer.innerHTML="<p class='no-orders'>No orders yet.</p>";
+  } else {
+    userOrders.forEach((order,index)=>{
+      let orderHtml=`<div class="order-item">
+        <h4>Order #${index+1} - Date: ${order.date}</h4>
+        <p><strong>Total:</strong> ₹${order.total}</p>
+        <div class="order-products">`;
+      order.products.forEach(p=>{
+        orderHtml+=`
+          <div class="order-flex">
+            <img src="${p.img}" class="product-img">
+            <div>
+              <p><strong>${p.name}</strong></p>
+              <p>Qty: ${p.qty}</p>
+              <p>Price: ₹${p.price} | Discounted: ₹${p.discount}</p>
+              <p>Rating: ${p.rating}★</p>
+              <p>Delivery / Expiry: ${p.delivery}</p>
+            </div>
+          </div>`;
+      });
+      orderHtml+="</div></div>";
+      ordersContainer.innerHTML+=orderHtml;
+    });
+  }
+}
+
+// Auto load if already logged in
+if(localStorage.getItem("currentUser")){
+  document.getElementById("login-section").style.display="none";
+  document.getElementById("account-section").style.display="block";
+  loadAccount();
+}
+</script>
+</body>
+</html>
