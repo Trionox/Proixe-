@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tulsi Plant - Proixe Store</title>
+  <style>
+    body { font-family: Arial; margin:0; background:#f9f9f9; }
+    header { background:#2c3e50; color:white; padding:15px; text-align:center; }
+    nav a { color:white; margin:0 15px; text-decoration:none; font-weight:bold; }
+    nav a:hover { text-decoration:underline; }
+    .container { max-width:900px; margin:auto; background:white; padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.2); }
+    .images { display:flex; gap:10px; overflow-x:auto; margin-bottom:20px; }
+    .images img { width:200px; border-radius:10px; }
+    h2 { margin:10px 0; }
+    .price { font-size:20px; margin:10px 0; }
+    .old-price { text-decoration: line-through; color: gray; margin-right:10px; }
+    .rating { color: gold; margin:10px 0; }
+    button { background:#3498db; color:white; padding:10px 15px; border:none; border-radius:5px; cursor:pointer; }
+    button:hover { background:#1d6fa5; }
+  </style>
+</head>
+<body>
+<header>
+  <h1>Proixe Store</h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="plants.html">Plants</a>
+    <a href="grocery.html">Grocery</a>
+    <a href="clothes.html">Clothes</a>
+    <a href="cart.html">Cart</a>
+    <a href="account.html">Account</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="images">
+    <img src="https://picsum.photos/id/1011/300/200" alt="Tulsi 1">
+    <img src="https://picsum.photos/id/1012/300/200" alt="Tulsi 2">
+    <img src="https://picsum.photos/id/1013/300/200" alt="Tulsi 3">
+    <img src="https://picsum.photos/id/1014/300/200" alt="Tulsi 4">
+  </div>
+
+  <h2>Tulsi Plant</h2>
+  <div class="price">
+    <span class="old-price">₹40</span>
+    <span class="new-price">₹30</span>
+  </div>
+
+  <div class="rating">⭐⭐⭐⭐☆ (4.2/5)</div>
+
+  <p>
+    Healthy Tulsi plant. Daily fresh, no expiry date. Perfect for home, health, and positivity.
+  </p>
+
+  <button onclick="addToCart()">Add to Cart</button>
+</div>
+
+<script>
+  function addToCart() {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+    cart.push({
+      name: "Tulsi Plant",
+      price: 30,
+      oldPrice: 40,
+      qty: 1
+    });
+    localStorage.setItem("cart", JSON.stringify(cart));
+    alert("Tulsi Plant added to cart!");
+  }
+</script>
+</body>
+</html>
