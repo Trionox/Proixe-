@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Normal T-shirt - Proixe Store</title>
+<style>
+body{font-family:Arial;margin:0;background:#f9f9f9;}
+header{background:#2c3e50;color:white;padding:15px;text-align:center;}
+nav a{color:white;margin:0 15px;text-decoration:none;font-weight:bold;}
+nav a:hover{text-decoration:underline;}
+.container{max-width:900px;margin:auto;background:white;padding:20px;border-radius:10px;box-shadow:0 2px 6px rgba(0,0,0,0.2);}
+.images{display:flex;gap:10px;overflow-x:auto;margin-bottom:20px;}
+.images img{width:200px;border-radius:10px;}
+h2{margin:10px 0;}
+.price{font-size:20px;margin:10px 0;}
+.old-price{text-decoration:line-through;color:gray;margin-right:10px;}
+.rating{color:gold;margin:10px 0;}
+.qty-controls{margin:10px 0;}
+.qty-controls button{padding:5px 10px;margin:0 5px;cursor:pointer;}
+.total-price{font-weight:bold;margin:10px 0;}
+button.add-cart{background:#3498db;color:white;padding:10px 15px;border:none;border-radius:5px;cursor:pointer;}
+button.add-cart:hover{background:#1d6fa5;}
+</style>
+</head>
+<body>
+<header>
+<h1>Proixe Store</h1>
+<nav>
+<a href="index.html">Home</a>
+<a href="plants.html">Plants</a>
+<a href="grocery.html">Grocery</a>
+<a href="clothes.html">Clothes</a>
+<a href="cart.html">Cart</a>
+<a href="account.html">Account</a>
+</nav>
+</header>
+
+<div class="container">
+<div class="images">
+<img src="https://picsum.photos/id/1061/300/200" alt="Normal T-shirt 1">
+<img src="https://picsum.photos/id/1062/300/200" alt="Normal T-shirt 2">
+<img src="https://picsum.photos/id/1063/300/200" alt="Normal T-shirt 3">
+<img src="https://picsum.photos/id/1064/300/200" alt="Normal T-shirt 4">
+</div>
+
+<h2>Normal T-shirt</h2>
+<div class="price">
+<span class="old-price">₹360</span>
+<span class="new-price" id="price">₹170</span>
+</div>
+
+<div class="rating">⭐⭐⭐⭐☆ (4.2/5)</div>
+<p>Comfortable cotton T-shirt. Manufacturing date: Today, Expiry: N/A.</p>
+
+<div class="qty-controls">
+<button onclick="decreaseQty()">-</button>
+<span id="qty">1</span>
+<button onclick="increaseQty()">+</button>
+</div>
+
+<div class="total-price">Total: ₹<span id="total">170</span></div>
+
+<button class="add-cart" onclick="addToCart()">Add to Cart</button>
+</div>
+
+<script>
+let qty = 1;
+const price = 170;
+const totalEl = document.getElementById('total');
+const qtyEl = document.getElementById('qty');
+
+function increaseQty() { qty++; qtyEl.innerText=qty; totalEl.innerText=price*qty; }
+function decreaseQty() { if(qty>1){ qty--; qtyEl.innerText=qty; totalEl.innerText=price*qty; } }
+
+function addToCart() {
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+  cart.push({name:"Normal T-shirt", price:price, oldPrice:360, qty:qty});
+  localStorage.setItem("cart", JSON.stringify(cart));
+  alert(Normal T-shirt added to cart! Quantity: ${qty});
+}
+</script>
+</body>
+</html>
